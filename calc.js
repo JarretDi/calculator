@@ -15,10 +15,10 @@ const display = document.querySelector(".display");
 function updateDisplay() {
     switch (state) {
         case 1:
-            display.textContent = n1 ? n1 : "";
+            display.textContent = n1 ? n1 : "0";
             break;
         case 2:
-            display.textContent = n2 ? n2 : "";
+            display.textContent = n2 ? n2 : "0";
             break;
         case "ERROR":
             display.textContent = "ERROR";
@@ -26,7 +26,7 @@ function updateDisplay() {
 }
 
 function roundTo3(num) {
-    return Math.round(num * 1000) / 1000;
+    return "" + (Math.round(num * 1000) / 1000);
 }
 
 function add(n1, n2) {
@@ -47,6 +47,8 @@ function div(n1, n2) {
 
 function operate(nextOp) {
     if (!(n1 && op && n2)) {
+        state = "ERROR";
+        updateDisplay();
         return "ERROR";
     }
 
@@ -99,13 +101,11 @@ operations.addEventListener("click", enterOperation);
 function enterOperation(e) {
     const nextOp = getOperation(e.target.className);
     if (nextOp === "ERROR") {
-        state = "ERROR";
-        updateDisplay();
         return;
     }
 
     if (state === 1) {
-        if (!n1 || nextOp === "=") {
+        if (!n1 || n1[n1.length] === "." || n1 === "-" || nextOp === "=") {
             state = "ERROR";
             updateDisplay();
             return;
@@ -139,4 +139,27 @@ function getOperation(opName) {
         default:
             return "ERROR"
     }
+}
+
+const del = document.querySelector(".del");
+del.addEventListener("click", delNum);
+
+function delNum() {
+    if (state === 1) {
+        n1 = n1.substring(0, n1.length - 1);
+    } else {
+        n2 = n2.substring(0, n2.length - 1);
+    }
+    updateDisplay();
+}
+
+const clear = document.querySelector(".clear");
+clear.addEventListener("click", clr);
+
+function clr() {
+    n1 = "";
+    op = null;
+    n2 = "";
+    state = 1;
+    updateDisplay();
 }
