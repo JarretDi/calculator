@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+    margin: 0px;
+    border: 0px;
+    font-family: 'Roboto';
+}
+
+.calculator {
+    background-color:slategrey;
+    padding: 32px;
+    border: 4px black solid;
+    border-radius: 8px;
+}
+
+.display {
+    width: auto;
+    background-color: aliceblue;
+    padding: 16px;
+    border: 4px darkslategrey solid;
+    border-radius: 4px;
+    margin: 16px 0px;
+    text-align: end;
+}
+
+.menu {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    margin: 8px 0px;
+}
+
+.menu button {
+    padding: 4px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color:azure;
+    background-color: midnightblue;
+    border-color: darkblue;
+}
+
+.menu button:hover {
+    background-color: rgb(19, 19, 85);
+}
+
+.buttons {
+    display: flex;
+}
+
+.numbers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-right: 8px;
+}
+
+.numbers button {
+    padding: 0px;
+    flex: 1 1 30%;
+    aspect-ratio: 1;
+    background-color:azure;
+    border-color: darkcyan;
+    border-radius: 4px;
+}
+
+.numbers button:hover {
+    padding: 0px;
+    flex: 1 1 30%;
+    aspect-ratio: 1;
+    background-color:rgba(240, 255, 255, 0.849);
+    border-color: rgba(0, 139, 139, 0.61);
+}
+
+.operations {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    gap: 4px;
+}
+
+.operations button {
+    padding: 12px;
+    flex: 1 1 1px;
+    background-color:darkslateblue;
+    border-color: midnightblue;
+    color: whitesmoke;
+    font-size: 24px;
+}
+
+.operations button:hover {
+    padding: 12px;
+    flex: 1 1 1px;
+    background-color:rgb(57, 49, 110);
+    border-color: rgba(25, 25, 112, 0.849);
+    color: whitesmoke;
+    font-size: 24px;
+}
