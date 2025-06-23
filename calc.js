@@ -6,9 +6,9 @@ let state = 1;
     ERROR
 */
 
-let n1;
-let op;
-let n2;
+let n1 = "";
+let op = null;
+let n2 = "";
 
 const display = document.querySelector(".display");
 
@@ -45,54 +45,98 @@ function div(n1, n2) {
     return (n2 !== 0) ? roundTo3(n1 / n2) : "ERROR";
 }
 
-function operate() {
+function operate(nextOp) {
     if (!(n1 && op && n2)) {
         return "ERROR";
     }
 
     n1 = op(n1, n2);
-    op = undefined;
-    n2 = undefined;
+    op = (nextOp === "=") ? null : nextOp;
+    n2 = "";
     state = 1;
-
     updateDisplay();
-
-    return op(n1, n2);
+    if (nextOp !== "=") state = 2;
 }
 
 const numbers = document.querySelector(".numbers");
-numbers.addEventListener("click", (e) => {
+numbers.addEventListener("click", inputNum);
+
+function inputNum(e) {
     const num = e.target.className;
     if (num === "numbers") return;
 
     if (state === 1) {
-        if (n1 === undefined) {
-            if (num === ".") {
+        if (num === ".") {
+            if (n1.length === 0) {
                 n1 = "0.";
-            } else {
-                n1 = num
+            } else if (!n1.includes(".")) {
+                n1 += "."
             }
-        } else {
-            if (num === "." && !n1.includes(".")) {
-                n1 += num;
-            } else if ("0123456789".includes(num)) {
-                n1 += num;
-            }
+        } else if (num === "-" && n1.length === 0) {
+            n1 = "-";
+        } else if ("0123456789".includes(num)) {
+            n1 += num;
         }
     } else if (state === 2) {
-        if (n2 === undefined) {
-            if (num !== ".") {
-                n2 = num;
-            } else {
+        if (num === ".") {
+            if (n2.length === 0) {
                 n2 = "0.";
+            } else if (!n2.includes(".")) {
+                n2 += "."
             }
-        } else {
-            if (num === "." && !n2.includes(".")) {
-                n2 += num;
-            } else if ("0123456789".includes(num)) {
-                n2 += num;
-            }
+        } else if (num === "-" && n2.length === 0) {
+            n2 = "-";
+        } else if ("0123456789".includes(num)) {
+            n2 += num;
         }
     }
     updateDisplay();
-});
+}
+
+const operations = document.querySelector(".operations");
+operations.addEventListener("click", enterOperation);
+
+function enterOperation(e) {
+    const nextOp = getOperation(e.target.className);
+    if (nextOp === "ERROR") {
+        state = "ERROR";
+        updateDisplay();
+        return;
+    }
+
+    if (state === 1) {
+        if (!n1 || nextOp === "=") {
+            state = "ERROR";
+            updateDisplay();
+            return;
+        } else {
+            op = nextOp;
+            state = 2;
+        }
+    } else if (state === 2) {
+        if (!n2) {
+            state = "ERROR";
+            updateDisplay();
+            return;
+        } else {
+            operate(nextOp);
+        }
+    }
+}
+
+function getOperation(opName) {
+    switch (opName) {
+        case "+":
+            return add;
+        case "-":
+            return sub;
+        case "x":
+            return mult;
+        case "/":
+            return div;
+        case "=":
+            return "=";
+        default:
+            return "ERROR"
+    }
+}
